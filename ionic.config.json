@@ -1,0 +1,7 @@
+{
+  "name": "marbles",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

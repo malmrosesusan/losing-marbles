@@ -1,0 +1,14 @@
+<div id="container">
+    <ion-grid>
+        <ion-row *ngFor="let row of rows; let x = index">
+            <ion-col *ngFor="let col of columns; let y = index"
+                ><span
+                    [ngStyle]="{
+                        color: hasMine({ x: x + 1, y: y + 1 }) ? 'red' : 'black'
+                    }"
+                    >()</span
+                ></ion-col
+            >
+        </ion-row>
+    </ion-grid>
+</div>
