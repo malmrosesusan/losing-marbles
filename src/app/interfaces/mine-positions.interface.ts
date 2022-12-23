@@ -1,4 +1,4 @@
 export interface IMinePositions {
-    x: Number,
-    y: Number
+    x: number,
+    y: number
 }

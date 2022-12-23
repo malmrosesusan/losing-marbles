@@ -1,27 +1,21 @@
-#container {
-    text-align: center;
 
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+.clickable {
+    cursor: pointer;
 }
-
-#container strong {
-    font-size: 20px;
-    line-height: 26px;
+.full-circle {
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 50%;
+    background-color: black;
 }
-
-#container p {
-    font-size: 16px;
-    line-height: 22px;
-
-    color: #8c8c8c;
-
-    margin: 0;
+.full-circle.game-lost {
+    background-color: gray;
 }
-
-#container a {
-    text-decoration: none;
+.full-circle.clicked {
+    cursor: pointer;
+    background-color: green;
+}
+.full-circle.danger {
+    background-color: red;
 }
