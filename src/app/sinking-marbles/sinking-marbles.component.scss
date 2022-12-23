@@ -1,3 +1,9 @@
+#container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    background-color: lemonchiffon;
+}
 
 .clickable {
     cursor: pointer;
@@ -7,15 +13,23 @@
     height: 22px;
     border: 0;
     border-radius: 50%;
-    background-color: black;
+    background-color: turquoise;
 }
 .full-circle.game-lost {
     background-color: gray;
 }
 .full-circle.clicked {
     cursor: pointer;
-    background-color: green;
+    background-color: teal;
 }
 .full-circle.danger {
-    background-color: red;
+    background-color: crimson;
+}
+.container {
+    position: relative;
+}
+.canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
 }

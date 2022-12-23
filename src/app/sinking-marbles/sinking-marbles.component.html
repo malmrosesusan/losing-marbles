@@ -1,51 +1,76 @@
-<ion-grid *ngIf="mines && mines.length === 5" class="ion-padding">
-    <ion-row>
-        <ion-col>
-            Traverse down the grid without encountering any mines. You have five attempts.
-        </ion-col>
-    </ion-row>
-    <ion-row *ngFor="let row of rows; let x = index" class="ion-padding">
-        <ion-col *ngFor="let col of columns; let y = index">
-            <div
-                class="full-circle"
-                [ngClass]="{
-                    'game-lost': gameLost,
-                    danger:
-                        hasMine(x, y) && (hasBeenClicked(x, y) || showMines),
-                    clicked: hasBeenClicked(x, y),
-                    clickable: isClickable(x, y)
-                }"
-                (click)="isClickable(x, y) && onClickPosition(x, y)"
-            ></div>
-            <!-- <span style="font-size: 10px;line-height:0px">
+<div #container id="container">
+    <canvas
+        #marbleCanvas
+        class="canvas"
+        [width]="screenWidth"
+        [height]="screenHeight"
+    ></canvas>
+    <ion-grid *ngIf="mines && mines.length === 5" class="ion-padding">
+        <ion-row>
+            <ion-col>
+                Traverse down the grid without encountering any mines. You have
+                five attempts.
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let row of rows; let x = index" class="ion-padding">
+            <ion-col *ngFor="let col of columns; let y = index">
+                <div
+                    class="full-circle"
+                    id="circle-{{x}}-{{y}}"
+                    [ngClass]="{
+                        'game-lost': gameLost,
+                        danger:
+                            hasMine(x, y) &&
+                            (hasBeenClicked(x, y) || showMines),
+                        clicked: hasBeenClicked(x, y),
+                        clickable: isClickable(x, y)
+                    }"
+                    (click)="isClickable(x, y) && onClickPosition(x, y, $event)"
+                ></div>
+                <!-- <span style="font-size: 10px;line-height:0px">
                     <br>x:{{x}}
                 <br>y:{{y}}
                 <br>{{isClickable(x,y)}}</span>-->
-        </ion-col>
-    </ion-row>
-    <ion-row *ngIf="gameLost" class="ion-padding-start ion-padding-end">
-        <ion-col
-            >You lost! You have {{ attemptsLeft }}
-            <span *ngIf="attemptsLeft === 1">try</span
-            ><span *ngIf="attemptsLeft !== 1">tries</span> left.</ion-col
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="gameLost" class="ion-padding-start ion-padding-end">
+            <ion-col
+                >You lost! You have {{ attemptsLeft }}
+                <span *ngIf="attemptsLeft === 1">try</span
+                ><span *ngIf="attemptsLeft !== 1">tries</span> left.</ion-col
+            >
+        </ion-row>
+        <ion-row
+            *ngIf="gameLost && attemptsLeft"
+            class="ion-padding-start ion-padding-end"
         >
-    </ion-row>
-    <ion-row *ngIf="gameLost && attemptsLeft" class="ion-padding-start ion-padding-end">
-        <ion-col
-            ><ion-button (click)="onClickTryAgain()"
-                >Try again</ion-button
-            ></ion-col
-        >
-    </ion-row>
-    <ion-row *ngIf="gameWon" class="ion-padding-start ion-padding-end">
-        <ion-col>You won!</ion-col>
-    </ion-row>
+            <ion-col
+                ><ion-button (click)="onClickTryAgain()"
+                    >Try again</ion-button
+                ></ion-col
+            >
+        </ion-row>
+        <ion-row *ngIf="gameWon" class="ion-padding-start ion-padding-end">
+            <ion-col>You won!</ion-col>
+        </ion-row>
 
-    <ion-row *ngIf="(!attemptsLeft && gameLost) || gameWon" class="ion-padding-start ion-padding-end">
-        <ion-col
-            ><ion-button (click)="onClickResetGame()"
-                >Reset game</ion-button
-            ></ion-col
+        <ion-row
+            *ngIf="(!attemptsLeft && gameLost) || gameWon"
+            class="ion-padding-start ion-padding-end"
         >
-    </ion-row>
-</ion-grid>
+            <ion-col
+                ><ion-button (click)="onClickResetGame()"
+                    >Reset game</ion-button
+                ></ion-col
+            >
+        </ion-row>
+        <!-- for development purposes -->
+        <ion-row class="ion-padding-start ion-padding-end">
+            <ion-col
+                ><ion-button (click)="showMines=true"
+                    >Show Mines</ion-button
+                ></ion-col
+            >
+        </ion-row>
+    </ion-grid>
+</div>

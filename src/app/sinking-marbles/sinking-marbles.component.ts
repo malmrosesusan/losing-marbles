@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import { AnonymousSubject } from "rxjs/internal/Subject";
 import { IMinePositions } from "../interfaces/mine-positions.interface";
 @Component({
     selector: "app-sinking-marbles",
@@ -6,6 +7,13 @@ import { IMinePositions } from "../interfaces/mine-positions.interface";
     styleUrls: ["./sinking-marbles.component.scss"],
 })
 export class SinkingMarblesComponent implements OnInit {
+
+    @ViewChild('container', {read: ElementRef}) container: ElementRef<ElementRef>;
+    @ViewChild('marbleCanvas') marbleCanvas: ElementRef<HTMLCanvasElement>;
+    public context: CanvasRenderingContext2D;
+    public screenWidth: number;
+    public screenHeight: number;
+    public lines: IMinePositions[] = [];
 
     // An array of mine positions
     public mines: IMinePositions[] = [];
@@ -34,9 +42,14 @@ export class SinkingMarblesComponent implements OnInit {
      * NgOnInit lifecycle hook.
      */
     ngOnInit(): void {
+        this.screenHeight = window.innerHeight;
+        this.screenWidth = window.innerWidth;
         this.setMines();
     }
 
+    ngAfterViewInit(): void {
+        this.context = this.marbleCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+    }
     /**
      * Sets mines in random places.
      * Currently, game requires that every column has a mine in it,
@@ -134,8 +147,25 @@ export class SinkingMarblesComponent implements OnInit {
      * @param x 
      * @param y 
      */
-    public onClickPosition(x: number, y: number): void {
-        this.currentTile = { x: x, y: y };
+    public onClickPosition(x: number, y: number, event:any): void {
+        
+        this.currentTile = { x: x, y: y }; 
+        console.log('event',event);
+        if (this.lines.length > 0) {
+            console.log(this.lines[this.lines.length-1].x, this.lines[this.lines.length-1].y)
+            this.context.beginPath();
+            this.context.lineWidth = 8;
+            // point to start the line
+            this.context.moveTo(event.x, event.y);
+            // point to end the line
+            this.context.lineTo(this.lines[this.lines.length-1].x, this.lines[this.lines.length-1].y);
+            // draws the line
+            this.context.strokeStyle = 'powderblue';
+            this.context.stroke(); 
+        }
+        
+        this.lines.push({x: event.x, y:event.y});
+
         if (this.hasMine(x, y)) {
             this.gameLost = true;
             this.attemptsLeft = this.attemptsLeft - 1;
@@ -158,6 +188,9 @@ export class SinkingMarblesComponent implements OnInit {
      */
     public onClickTryAgain(): void {
         this.clicked = [];
+        this.context.clearRect(0, 0, this.screenWidth, this.screenHeight);
+        this.context.beginPath();
+        this.lines = [];
         this.currentTile = null;
         this.gameLost = false;
     }
@@ -167,6 +200,9 @@ export class SinkingMarblesComponent implements OnInit {
      */
     public onClickResetGame(): void {
         this.currentTile = null;
+        this.context.clearRect(0, 0, this.screenWidth, this.screenHeight);
+        this.context.beginPath();
+        this.lines = [];
         this.clicked = [];
         this.gameLost = false;
         this.gameWon = false;
