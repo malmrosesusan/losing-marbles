@@ -6,6 +6,7 @@ import { Tab4Page } from './tab4.page';
 
 import { Tab4PageRoutingModule } from './tab4-routing.module';
 import { CameraChallengeModule } from '../phaser-frogger/camera-challenge.module';
+import { AimingGameComponent } from '../aiming-game/aiming-game.component';
 
 @NgModule({
     imports: [
@@ -15,6 +16,6 @@ import { CameraChallengeModule } from '../phaser-frogger/camera-challenge.module
         CameraChallengeModule,
         Tab4PageRoutingModule
     ],
-    declarations: [Tab4Page]
+    declarations: [Tab4Page,AimingGameComponent]
 })
 export class Tab4PageModule { }
